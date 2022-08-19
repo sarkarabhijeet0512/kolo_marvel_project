@@ -64,6 +64,14 @@ func New() (config *viper.Viper) {
 			defaultVal: "Asia/Kolkata",
 			desc:       "timezone of the user's country to whom this service is serving. eg. Asia/Kolkata",
 		},
+		"marvel_api_key": {
+			defaultVal: "07216b5045a3252f244a86a0de131be3",
+			desc:       "marvel default api key",
+		},
+		"marvel_base_svc": {
+			defaultVal: "https://gateway.marvel.com",
+			desc:       "marvel main svc",
+		},
 	}
 
 	for key, meta := range confList {

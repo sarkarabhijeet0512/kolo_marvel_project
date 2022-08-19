@@ -5,6 +5,7 @@ import (
 	"kolo_marvel_project/internal/server"
 	"kolo_marvel_project/internal/server/handler"
 	"kolo_marvel_project/pkg/dummy"
+	"kolo_marvel_project/pkg/marvel"
 	"kolo_marvel_project/utils/initialize"
 
 	"go.uber.org/fx"
@@ -21,6 +22,7 @@ func serverRun() {
 		server.Module,
 		handler.Module,
 		dummy.Module,
+		marvel.Module,
 	)
 	// Run app forever
 	app.Run()

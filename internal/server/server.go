@@ -36,8 +36,9 @@ type Options struct {
 	Log    *logrus.Logger
 	// Tracer opentracing.Tracer
 
-	PostgresDB   *pg.DB `name:"kolo_test_db"`
-	DummyHandler *handler.DummyHandler
+	PostgresDB    *pg.DB `name:"kolo_test_db"`
+	DummyHandler  *handler.DummyHandler
+	MarvelHandler *handler.MarvelHandler
 }
 
 func inLambda() bool {
