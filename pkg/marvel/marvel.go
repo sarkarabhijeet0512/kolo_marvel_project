@@ -78,18 +78,18 @@ type (
 	}
 	// ReqBody for searching
 	Payload struct {
-		Name          string `json:"name"`
-		NameStartWith string `json:"nameStartWith"`
-		ModifiedSince string `json:"modifiedSince"`
-		Comics        string `json:"comics"`
-		Series        string `json:"series"`
-		Events        string `json:"events"`
-		Stories       string `json:"stories"`
-		OrderBy       string `json:"orderBy"`
-		Limit         string `json:"limit"`
-		Offset        string `json:"offset"`
-		Apikey        string `json:"apikey"`
-		Hash          string `json:"hash"`
-		Ts            string `json:"ts"`
+		Name           string `form:"name"`
+		NameStartsWith string `form:"nameStartsWith"`
+		ModifiedSince  string `form:"modifiedSince"`
+		Comics         string `form:"comics"`
+		Series         string `form:"series"`
+		Events         string `form:"events"`
+		Stories        string `form:"stories"`
+		OrderBy        string `form:"orderBy"`
+		Limit          int    `form:"limit"`
+		Offset         int    `form:"offset"`
+		Apikey         string `form:"apikey"`
+		Hash           string `form:"hash"`
+		Ts             int    `form:"ts"`
 	}
 )

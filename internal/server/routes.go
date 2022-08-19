@@ -19,6 +19,8 @@ func v1Routes(router *gin.RouterGroup, o *Options) {
 
 	// middlewares
 	r.Use(mw.ErrorHandlerX(o.Log))
+
+	r.GET("/marvel/character/search", o.MarvelHandler.SearchMarvelCharacters)
 	//add new routes here
 
 }

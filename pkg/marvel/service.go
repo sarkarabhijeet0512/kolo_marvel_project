@@ -1,11 +1,11 @@
 package marvel
 
 import (
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	utils "kolo_marvel_project/utils/common"
 	"net/http"
-	"strings"
+	"net/url"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -27,14 +27,30 @@ func NewService(conf *viper.Viper, log *logrus.Logger, dbRepo Repository) *Servi
 }
 
 // IsDBActive gets user data by her userID
-func (s *Service) FetchCharacterDetails(payload *Payload) (mcd *MarvelCharacterDetails) {
-	url := "https://gateway.marvel.com:443/v1/public/characters?apikey=07216b5045a3252f244a86a0de131be3&hash=ff4aeb8af63fc49e26997e7f4a4f9991&ts=1&name=3-D%20Man"
-	method := "GET"
-	client := &http.Client{}
-	b, _ := json.Marshal(payload)
-	par := strings.NewReader(string(b))
-	req, err := http.NewRequest(method, url, par)
+func (s *Service) FetchCharacterDetails(payload *Payload) (mcd *MarvelCharacterDetails, err error) {
+	payload.Ts = 1
+	payload.Apikey = s.conf.GetString("MARVEL_PUBLIC_KEY")
+	payload.Hash = utils.GetMD5Hash(fmt.Sprint(payload.Ts) + s.conf.GetString("MARVEL_PRIVATE_KEY") + s.conf.GetString("MARVEL_PUBLIC_KEY"))
+	payload.Limit = 10
 
+	base, _ := url.Parse(s.conf.GetString("MARVEL_BASE_SVC") + "/v1/public/characters")
+
+	client := &http.Client{}
+	params := url.Values{}
+
+	params.Add("apikey", payload.Apikey)
+	params.Add("hash", payload.Hash)
+	params.Add("ts", fmt.Sprint(payload.Ts))
+	params.Add("limit", fmt.Sprint(payload.Limit))
+	if payload.Name != "" {
+		params.Add("name", payload.Name)
+	}
+	if payload.NameStartsWith != "" {
+		params.Add("nameStartsWith", payload.NameStartsWith)
+	}
+	base.RawQuery = params.Encode()
+
+	req, err := http.NewRequest("GET", base.String(), nil)
 	if err != nil {
 		fmt.Println(err)
 		return
