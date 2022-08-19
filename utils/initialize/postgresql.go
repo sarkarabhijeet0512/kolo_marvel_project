@@ -6,7 +6,6 @@ import (
 
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
-	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 
 	_ "github.com/lib/pq"

@@ -76,6 +76,10 @@ func New() (config *viper.Viper) {
 			defaultVal: "4389006c4089ba422cb299f67e7516b96b87787c",
 			desc:       "marvel private key",
 		},
+		"redis_worker": {
+			defaultVal: "localhost:6379",
+			desc:       "Postgresql username",
+		},
 	}
 
 	for key, meta := range confList {

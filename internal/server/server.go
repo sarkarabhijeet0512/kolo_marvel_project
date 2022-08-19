@@ -7,10 +7,12 @@ import (
 	"os"
 
 	"kolo_marvel_project/internal/server/handler"
+	"kolo_marvel_project/pkg/cache"
 
 	"github.com/apex/gateway"
 	"github.com/gin-gonic/gin"
 	"github.com/go-pg/pg/v10"
+	"github.com/gomodule/redigo/redis"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 	ginlogrus "github.com/toorop/gin-logrus"
@@ -36,7 +38,9 @@ type Options struct {
 	Log    *logrus.Logger
 	// Tracer opentracing.Tracer
 
-	PostgresDB    *pg.DB `name:"kolo_test_db"`
+	PostgresDB    *pg.DB      `name:"kolo_test_db"`
+	Redis         *redis.Pool `name:"redisWorker"`
+	CacheService  *cache.Service
 	DummyHandler  *handler.DummyHandler
 	MarvelHandler *handler.MarvelHandler
 }

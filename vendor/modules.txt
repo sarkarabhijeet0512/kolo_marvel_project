@@ -1,5 +1,3 @@
-# github.com/HdrHistogram/hdrhistogram-go v1.1.2
-## explicit
 # github.com/apex/gateway v1.1.2
 ## explicit
 github.com/apex/gateway
@@ -60,6 +58,9 @@ github.com/goccy/go-json/internal/encoder/vm_color_indent
 github.com/goccy/go-json/internal/encoder/vm_indent
 github.com/goccy/go-json/internal/errors
 github.com/goccy/go-json/internal/runtime
+# github.com/gomodule/redigo v1.7.1-0.20190724094224-574c33c3df38
+## explicit
+github.com/gomodule/redigo/redis
 # github.com/hashicorp/hcl v1.0.0
 github.com/hashicorp/hcl
 github.com/hashicorp/hcl/hcl/ast
@@ -95,8 +96,6 @@ github.com/mitchellh/mapstructure
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.2
 github.com/modern-go/reflect2
-# github.com/opentracing/opentracing-go v1.2.0
-## explicit
 # github.com/pelletier/go-toml v1.9.5
 github.com/pelletier/go-toml
 # github.com/pelletier/go-toml/v2 v2.0.1
@@ -143,10 +142,6 @@ github.com/tmthrgd/go-hex
 # github.com/toorop/gin-logrus v0.0.0-20210225092905-2c785434f26f
 ## explicit
 github.com/toorop/gin-logrus
-# github.com/uber/jaeger-client-go v2.30.0+incompatible
-## explicit
-# github.com/uber/jaeger-lib v2.4.1+incompatible
-## explicit
 # github.com/ugorji/go/codec v1.2.7
 github.com/ugorji/go/codec
 # github.com/vmihailenco/bufpool v0.1.11

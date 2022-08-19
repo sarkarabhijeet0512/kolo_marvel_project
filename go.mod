@@ -9,6 +9,7 @@ require (
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-pg/pg/v10 v10.10.6
+	github.com/gomodule/redigo v1.7.1-0.20190724094224-574c33c3df38
 	github.com/lib/pq v1.10.6
 	github.com/makasim/sentryhook v0.4.0
 	github.com/sebest/logrusly v0.0.0-20180315190218-3235eccb8edc
