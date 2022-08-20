@@ -7,8 +7,4 @@ type Code int
 // Generic exceptions
 const (
 	UncaughtException Code = iota // 0
-	InvalidAppToken
-	CSVFileDataFormatNotProper
-	UserNotPresent
-	ErrorInsertingToDatabase
 )

@@ -9,15 +9,11 @@ func _() {
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[UncaughtException-0]
-	_ = x[InvalidAppToken-1]
-	_ = x[CSVFileDataFormatNotProper-2]
-	_ = x[UserNotPresent-3]
-	_ = x[ErrorInsertingToDatabase-4]
 }
 
-const _Code_name = "UncaughtExceptionInvalidAppTokenCSVFileDataFormatNotProperUserNotPresentErrorInsertingToDatabase"
+const _Code_name = "UncaughtException"
 
-var _Code_index = [...]uint8{0, 17, 32, 58, 72, 96}
+var _Code_index = [...]uint8{0, 17}
 
 func (i Code) String() string {
 	if i < 0 || i >= Code(len(_Code_index)-1) {

@@ -13,7 +13,7 @@ import (
 // var appName = strings.ReplaceAll(
 // 	config.Config.GetString("new_relic_app_name"), " ", "",
 // )
-var appName = "PricingModule"
+var appName = "kolo_marvel_project"
 
 // var appName = config.Config.GetString("new_relic_app_name")
 
