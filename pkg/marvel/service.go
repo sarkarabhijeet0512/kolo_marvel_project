@@ -1,50 +1,92 @@
 package marvel
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"kolo_marvel_project/er"
+	"kolo_marvel_project/pkg/cache"
 	utils "kolo_marvel_project/utils/common"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 type Service struct {
-	conf *viper.Viper
-	log  *logrus.Logger
-	Repo Repository
+	conf         *viper.Viper
+	log          *logrus.Logger
+	Repo         Repository
+	CacheService *cache.Service
 }
 
 // NewService returns a user service object.
-func NewService(conf *viper.Viper, log *logrus.Logger, dbRepo Repository) *Service {
+func NewService(conf *viper.Viper, log *logrus.Logger, dbRepo Repository, CacheService *cache.Service) *Service {
 	return &Service{
-		conf: conf,
-		log:  log,
-		Repo: dbRepo,
+		conf:         conf,
+		log:          log,
+		Repo:         dbRepo,
+		CacheService: CacheService,
 	}
 }
 
+const (
+	itemsPerPage = 10
+)
+
 // IsDBActive gets user data by her userID
 func (s *Service) FetchCharacterDetails(payload *Payload) (mcd *MarvelCharacterDetails, err error) {
+
 	payload.Ts = 1
 	payload.Apikey = s.conf.GetString("MARVEL_PUBLIC_KEY")
 	payload.Hash = utils.GetMD5Hash(fmt.Sprint(payload.Ts) + s.conf.GetString("MARVEL_PRIVATE_KEY") + s.conf.GetString("MARVEL_PUBLIC_KEY"))
-	payload.Limit = 10
+
+	err = s.CacheService.Repo.Get(payload.NameStartsWith+fmt.Sprint(payload.Page), &mcd)
+	paginate := GetDataPage(payload.Page)
+	payload.Limit = paginate.Limit
+	payload.Offset = paginate.Offset
+
+	if err != nil {
+		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
+		return
+	}
+
+	if err != nil && err.Error() == "cache: key not found." {
+		mcd, err = s.MarvelCharacterList(payload)
+		if err != nil {
+			return
+		}
+		err = s.CacheService.Repo.Set(payload.NameStartsWith+fmt.Sprint(payload.Page), mcd, 5*time.Minute)
+		if err != nil {
+			return
+		}
+	}
+	return mcd, err
+}
+
+// pages start at 1, can't be 0 or less.
+func GetDataPage(page int) (pagination Pagination) {
+	pagination.Offset = (page - 1) * itemsPerPage
+	pagination.Limit = pagination.Offset + itemsPerPage
+	return
+}
+func (s *Service) MarvelCharacterList(payload *Payload) (mcd *MarvelCharacterDetails, err error) {
+
+	var (
+		client = &http.Client{}
+		params = url.Values{}
+	)
 
 	base, _ := url.Parse(s.conf.GetString("MARVEL_BASE_SVC") + "/v1/public/characters")
-
-	client := &http.Client{}
-	params := url.Values{}
 
 	params.Add("apikey", payload.Apikey)
 	params.Add("hash", payload.Hash)
 	params.Add("ts", fmt.Sprint(payload.Ts))
 	params.Add("limit", fmt.Sprint(payload.Limit))
-	if payload.Name != "" {
-		params.Add("name", payload.Name)
-	}
+	params.Add("offset", fmt.Sprint(payload.Offset))
+
 	if payload.NameStartsWith != "" {
 		params.Add("nameStartsWith", payload.NameStartsWith)
 	}
@@ -62,6 +104,7 @@ func (s *Service) FetchCharacterDetails(payload *Payload) (mcd *MarvelCharacterD
 		fmt.Println(err)
 		return
 	}
+
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
@@ -69,6 +112,10 @@ func (s *Service) FetchCharacterDetails(payload *Payload) (mcd *MarvelCharacterD
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(string(body))
+	err = json.Unmarshal(body, &mcd)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	return
 }

@@ -38,7 +38,13 @@ func (h *MarvelHandler) SearchMarvelCharacters(c *gin.Context) {
 		req = marvel.Payload{}
 		res = &GeneticRes{}
 	)
-	h.DeferBlock(c, err)
+	defer func() {
+		if err != nil {
+			c.Error(err)
+			h.log.WithField("span", err).Warn(err.Error())
+			return
+		}
+	}()
 	if err = c.ShouldBind(&req); err != nil {
 		h.log.WithField("span", err).Warn(err.Error())
 		err = er.New(err, er.UncaughtException).SetStatus(http.StatusBadRequest)
@@ -57,12 +63,5 @@ func (h *MarvelHandler) SearchMarvelCharacters(c *gin.Context) {
 
 }
 func (h *MarvelHandler) DeferBlock(c *gin.Context, err error) {
-	defer func() {
-		if err != nil {
-			c.Error(err)
-			h.log.WithField("span", err).Warn(err.Error())
-			return
-		}
-	}()
-	return
+
 }

@@ -11,7 +11,7 @@ var Module = fx.Options(
 
 type (
 	MarvelCharacterDetails struct {
-		Code            string `json:"code"`
+		Code            int    `json:"code"`
 		Status          string `json:"status"`
 		Copyright       string `json:"copyright"`
 		AttributionText string `json:"attributionText"`
@@ -33,31 +33,31 @@ type (
 		Type        string `json:"type,omitempty"`
 	}
 	Comics struct {
-		Available     string  `json:"available"`
-		Returned      string  `json:"returned"`
+		Available     int     `json:"available"`
+		Returned      int     `json:"returned"`
 		CollectionURI string  `json:"collectionURI"`
 		Items         []Items `json:"items"`
 	}
 	Stories struct {
-		Available     string  `json:"available"`
-		Returned      string  `json:"returned"`
+		Available     int     `json:"available"`
+		Returned      int     `json:"returned"`
 		CollectionURI string  `json:"collectionURI"`
 		Items         []Items `json:"items"`
 	}
 	Events struct {
-		Available     string  `json:"available"`
-		Returned      string  `json:"returned"`
+		Available     int     `json:"available"`
+		Returned      int     `json:"returned"`
 		CollectionURI string  `json:"collectionURI"`
 		Items         []Items `json:"items"`
 	}
 	Series struct {
-		Available     string  `json:"available"`
-		Returned      string  `json:"returned"`
+		Available     int     `json:"available"`
+		Returned      int     `json:"returned"`
 		CollectionURI string  `json:"collectionURI"`
 		Items         []Items `json:"items"`
 	}
 	Results struct {
-		ID          string    `json:"id"`
+		ID          int       `json:"id"`
 		Name        string    `json:"name"`
 		Description string    `json:"description"`
 		Modified    string    `json:"modified"`
@@ -70,10 +70,10 @@ type (
 		Series      Series    `json:"series"`
 	}
 	Data struct {
-		Offset  string    `json:"offset"`
-		Limit   string    `json:"limit"`
-		Total   string    `json:"total"`
-		Count   string    `json:"count"`
+		Offset  int       `json:"offset"`
+		Limit   int       `json:"limit"`
+		Total   int       `json:"total"`
+		Count   int       `json:"count"`
 		Results []Results `json:"results"`
 	}
 	// ReqBody for searching
@@ -91,5 +91,14 @@ type (
 		Apikey         string `form:"apikey"`
 		Hash           string `form:"hash"`
 		Ts             int    `form:"ts"`
+		Page           int    `form:"page,default:1"`
+	}
+	Pagination struct {
+		Limit          int  `json:"limit"`
+		Offset         int  `json:"offset"`
+		TotalPages     int  `json:"totalPages"`
+		TotalDataCount int  `json:"totalDataCount"`
+		CurrentPage    int  `json:"currentPage"`
+		Proceed        bool `json:"proceed"`
 	}
 )
