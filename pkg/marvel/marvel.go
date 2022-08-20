@@ -27,47 +27,47 @@ type (
 		Path      string `json:"path"`
 		Extension string `json:"extension"`
 	}
-	Items struct {
-		ResourceURI string `json:"resourceURI"`
-		Name        string `json:"name"`
-		Type        string `json:"type,omitempty"`
-	}
-	Comics struct {
-		Available     int     `json:"available"`
-		Returned      int     `json:"returned"`
-		CollectionURI string  `json:"collectionURI"`
-		Items         []Items `json:"items"`
-	}
-	Stories struct {
-		Available     int     `json:"available"`
-		Returned      int     `json:"returned"`
-		CollectionURI string  `json:"collectionURI"`
-		Items         []Items `json:"items"`
-	}
-	Events struct {
-		Available     int     `json:"available"`
-		Returned      int     `json:"returned"`
-		CollectionURI string  `json:"collectionURI"`
-		Items         []Items `json:"items"`
-	}
-	Series struct {
-		Available     int     `json:"available"`
-		Returned      int     `json:"returned"`
-		CollectionURI string  `json:"collectionURI"`
-		Items         []Items `json:"items"`
-	}
+	// Items struct {
+	// 	ResourceURI string `json:"resourceURI"`
+	// 	Name        string `json:"name"`
+	// 	Type        string `json:"type,omitempty"`
+	// }
+	// Comics struct {
+	// 	Available     int     `json:"available"`
+	// 	Returned      int     `json:"returned"`
+	// 	CollectionURI string  `json:"collectionURI"`
+	// 	Items         []Items `json:"items"`
+	// }
+	// Stories struct {
+	// 	Available     int     `json:"available"`
+	// 	Returned      int     `json:"returned"`
+	// 	CollectionURI string  `json:"collectionURI"`
+	// 	Items         []Items `json:"items"`
+	// }
+	// Events struct {
+	// 	Available     int     `json:"available"`
+	// 	Returned      int     `json:"returned"`
+	// 	CollectionURI string  `json:"collectionURI"`
+	// 	Items         []Items `json:"items"`
+	// }
+	// Series struct {
+	// 	Available     int     `json:"available"`
+	// 	Returned      int     `json:"returned"`
+	// 	CollectionURI string  `json:"collectionURI"`
+	// 	Items         []Items `json:"items"`
+	// }
 	Results struct {
-		ID          int       `json:"id"`
-		Name        string    `json:"name"`
-		Description string    `json:"description"`
-		Modified    string    `json:"modified"`
-		ResourceURI string    `json:"resourceURI"`
-		Urls        []Urls    `json:"urls"`
-		Thumbnail   Thumbnail `json:"thumbnail"`
-		Comics      Comics    `json:"comics"`
-		Stories     Stories   `json:"stories"`
-		Events      Events    `json:"events"`
-		Series      Series    `json:"series"`
+		ID          int    `json:"id"`
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		// Modified    string `json:"modified"`
+		// ResourceURI string `json:"resourceURI"`
+		// Urls        []Urls    `json:"urls"`
+		Thumbnail Thumbnail `json:"thumbnail"`
+		// Comics      Comics    `json:"comics"`
+		// Stories     Stories   `json:"stories"`
+		// Events      Events    `json:"events"`
+		// Series      Series    `json:"series"`
 	}
 	Data struct {
 		Offset  int       `json:"offset"`

@@ -57,11 +57,7 @@ func (h *MarvelHandler) SearchMarvelCharacters(c *gin.Context) {
 		return
 	}
 	res.Success = true
-	res.Message = "charcaterObj"
-	res.Data = charcaterObj
+	res.Message = "Marvel Character Details Successful"
+	res.Data = charcaterObj.Data
 	c.JSON(http.StatusOK, res)
-
-}
-func (h *MarvelHandler) DeferBlock(c *gin.Context, err error) {
-
 }

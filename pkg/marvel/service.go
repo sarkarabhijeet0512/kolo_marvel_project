@@ -48,22 +48,20 @@ func (s *Service) FetchCharacterDetails(payload *Payload) (mcd *MarvelCharacterD
 	payload.Limit = paginate.Limit
 	payload.Offset = paginate.Offset
 
-	if err != nil {
-		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
-		return
-	}
-
 	if err != nil && err.Error() == "cache: key not found." {
 		mcd, err = s.MarvelCharacterList(payload)
 		if err != nil {
+			s.log.Info("err :", err, " ,obj :", mcd, " ,payload :", payload)
+			err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 			return
 		}
 		err = s.CacheService.Repo.Set(payload.NameStartsWith+fmt.Sprint(payload.Page), mcd, 5*time.Minute)
 		if err != nil {
+			err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 			return
 		}
 	}
-	return mcd, err
+	return
 }
 
 // pages start at 1, can't be 0 or less.
@@ -94,14 +92,14 @@ func (s *Service) MarvelCharacterList(payload *Payload) (mcd *MarvelCharacterDet
 
 	req, err := http.NewRequest("GET", base.String(), nil)
 	if err != nil {
-		fmt.Println(err)
+		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 		return
 	}
 	req.Header.Add("Accept", "application/json")
 
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 		return
 	}
 
@@ -109,12 +107,12 @@ func (s *Service) MarvelCharacterList(payload *Payload) (mcd *MarvelCharacterDet
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println(err)
+		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 		return
 	}
 	err = json.Unmarshal(body, &mcd)
 	if err != nil {
-		fmt.Println(err)
+		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 		return
 	}
 	return
