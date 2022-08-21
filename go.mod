@@ -17,6 +17,7 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.12.0
+	github.com/stretchr/testify v1.7.1
 	github.com/toorop/gin-logrus v0.0.0-20210225092905-2c785434f26f
 	go.uber.org/fx v1.18.1
 	go.uber.org/zap v1.22.0

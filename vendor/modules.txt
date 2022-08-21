@@ -10,6 +10,8 @@ github.com/aws/aws-lambda-go/lambdacontext
 # github.com/certifi/gocertifi v0.0.0-20210507211836-431795d63e8d
 ## explicit
 github.com/certifi/gocertifi
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
 # github.com/fsnotify/fsnotify v1.5.4
 github.com/fsnotify/fsnotify
 # github.com/getsentry/raven-go v0.2.0
@@ -105,6 +107,8 @@ github.com/pelletier/go-toml/v2/internal/danger
 github.com/pelletier/go-toml/v2/internal/tracker
 # github.com/pkg/errors v0.9.1
 github.com/pkg/errors
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
 # github.com/sebest/logrusly v0.0.0-20180315190218-3235eccb8edc
 ## explicit
 github.com/sebest/logrusly
@@ -135,6 +139,9 @@ github.com/spf13/viper/internal/encoding/javaproperties
 github.com/spf13/viper/internal/encoding/json
 github.com/spf13/viper/internal/encoding/toml
 github.com/spf13/viper/internal/encoding/yaml
+# github.com/stretchr/testify v1.7.1
+## explicit
+github.com/stretchr/testify/assert
 # github.com/subosito/gotenv v1.3.0
 github.com/subosito/gotenv
 # github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc

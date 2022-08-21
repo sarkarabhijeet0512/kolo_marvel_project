@@ -1,25 +1,72 @@
 package main
 
 import (
+	"context"
+	"kolo_marvel_project/config"
 	"kolo_marvel_project/internal/server"
+	"kolo_marvel_project/internal/server/handler"
+	"kolo_marvel_project/pkg/cache"
+	"kolo_marvel_project/pkg/dummy"
+	"kolo_marvel_project/pkg/marvel"
+	"kolo_marvel_project/utils/initialize"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/fx"
 )
 
-// func SetUpRouter() *gin.Engine {
-// 	router := gin.Default()
-// 	router.Run()
-// 	return router
-// }
-func TestFetchCharacterDetails(t *testing.T) {
-	serverRun()
-	o := server.Options{}
-	r := server.SetupRouter(&server.Options{})
-	// r.Run()
-	r.GET("/marvel/character/search", o.MarvelHandler.SearchMarvelCharacters)
-	req, _ := http.NewRequest("GET", "/marvel/character/search", nil)
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
+func setupMockServer() (router *gin.Engine) {
+	params := server.Options{}
 
+	app := fx.New(
+		fx.Provide(
+			// postgresql
+			initialize.NewKoloMarvelprojecteDB,
+			initialize.NewRedisWorker,
+		),
+		config.Module,
+		initialize.Module,
+		server.Module,
+		handler.Module,
+		dummy.Module,
+		marvel.Module,
+		cache.Module,
+		// Run app forever
+
+		fx.Populate(&params),
+	)
+	if err := app.Start(context.TODO()); err != nil {
+		panic(err)
+	}
+	defer app.Stop(context.TODO())
+
+	router = server.SetupRouter(&params)
+	return
 }
+
+func TestHealthz(t *testing.T) {
+	router := setupMockServer()
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/_healthz", nil)
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, `{"ok":"ok"}`, w.Body.String())
+}
+
+// func TestFetchCharacterDetails(t *testing.T) {
+// 	serverRun()
+// 	o := server.Options{}
+// 	r := server.SetupRouter(&server.Options{})
+// 	// r.Run()
+// 	r.GET("/marvel/character/search", o.MarvelHandler.SearchMarvelCharacters)
+// 	req, _ := http.NewRequest("GET", "/marvel/character/search", nil)
+// 	w := httptest.NewRecorder()
+// 	r.ServeHTTP(w, req)
+
+// }
