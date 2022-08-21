@@ -14,7 +14,6 @@ type NewRepositoryIn struct {
 	fx.In
 
 	Log *logrus.Logger
-	DB  *pg.DB `name:"kolo_test_db"`
 }
 
 // PGRepo is postgres implementation
@@ -29,7 +28,6 @@ func NewDBRepository(i NewRepositoryIn) (repo Repository, err error) {
 
 	repo = &PGRepo{
 		log: i.Log,
-		db:  i.DB,
 	}
 
 	return repo, nil

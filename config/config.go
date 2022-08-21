@@ -28,26 +28,6 @@ func New() (config *viper.Viper) {
 			defaultVal: "development",
 			desc:       "Environment",
 		},
-		"postgresql_db": {
-			defaultVal: "kolo_test_db",
-			desc:       "Postgresql db name",
-		},
-		"postgresql_host": {
-			defaultVal: "localhost",
-			desc:       "Postgresql host",
-		},
-		"postgresql_port": {
-			defaultVal: "5432",
-			desc:       "Postgresql port",
-		},
-		"postgresql_user": {
-			defaultVal: "postgres",
-			desc:       "Postgresql username",
-		},
-		"postgresql_password": {
-			defaultVal: "kolotest",
-			desc:       "Postgresql password",
-		},
 		"port": {
 			defaultVal: "8765",
 			desc:       "Port number of delivery rider API server",

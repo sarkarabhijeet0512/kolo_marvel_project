@@ -49,7 +49,6 @@ func (h *DummyHandler) Dummy(c *gin.Context) {
 		}
 	}()
 
-	res.Success, err = h.dummyService.Repo.IsActive()
 	res.Timestamp = now
 	if err != nil {
 		res.Error = err.Error()

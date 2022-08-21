@@ -11,7 +11,6 @@ import (
 
 	"github.com/apex/gateway"
 	"github.com/gin-gonic/gin"
-	"github.com/go-pg/pg/v10"
 	"github.com/gomodule/redigo/redis"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -38,7 +37,6 @@ type Options struct {
 	Log    *logrus.Logger
 	// Tracer opentracing.Tracer
 
-	PostgresDB    *pg.DB      `name:"kolo_test_db"`
 	Redis         *redis.Pool `name:"redisWorker"`
 	CacheService  *cache.Service
 	DummyHandler  *handler.DummyHandler
@@ -86,7 +84,6 @@ func SetupRouter(o *Options) (router *gin.Engine) {
 func HealthHandler(o *Options) func(*gin.Context) {
 	return func(c *gin.Context) {
 		var err error
-		err = o.PostgresDB.Ping(c)
 		if err != nil {
 			c.AbortWithError(http.StatusFailedDependency, err)
 			return

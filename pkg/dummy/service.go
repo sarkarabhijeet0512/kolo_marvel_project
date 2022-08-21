@@ -19,8 +19,3 @@ func NewService(conf *viper.Viper, log *logrus.Logger, dbRepo Repository) *Servi
 		Repo: dbRepo,
 	}
 }
-
-// IsDBActive gets user data by her userID
-func (s *Service) IsActive() (bool, error) {
-	return s.Repo.IsActive()
-}
