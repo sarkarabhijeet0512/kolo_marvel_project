@@ -16,18 +16,18 @@ import (
 )
 
 type Service struct {
-	conf         *viper.Viper
-	log          *logrus.Logger
-	Repo         Repository
+	conf *viper.Viper
+	log  *logrus.Logger
+	// Repo         Repository
 	CacheService *cache.Service
 }
 
 // NewService returns a user service object.
-func NewService(conf *viper.Viper, log *logrus.Logger, dbRepo Repository, CacheService *cache.Service) *Service {
+func NewService(conf *viper.Viper, log *logrus.Logger, CacheService *cache.Service) *Service {
 	return &Service{
-		conf:         conf,
-		log:          log,
-		Repo:         dbRepo,
+		conf: conf,
+		log:  log,
+		// Repo:         dbRepo,
 		CacheService: CacheService,
 	}
 }

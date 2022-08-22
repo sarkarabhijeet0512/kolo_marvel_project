@@ -139,9 +139,12 @@ github.com/spf13/viper/internal/encoding/javaproperties
 github.com/spf13/viper/internal/encoding/json
 github.com/spf13/viper/internal/encoding/toml
 github.com/spf13/viper/internal/encoding/yaml
+# github.com/stretchr/objx v0.1.1
+github.com/stretchr/objx
 # github.com/stretchr/testify v1.7.1
 ## explicit
 github.com/stretchr/testify/assert
+github.com/stretchr/testify/mock
 # github.com/subosito/gotenv v1.3.0
 github.com/subosito/gotenv
 # github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc
@@ -216,6 +219,8 @@ golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
+# golang.org/x/tools v0.1.12
+## explicit
 # google.golang.org/protobuf v1.28.0
 google.golang.org/protobuf/encoding/protowire
 google.golang.org/protobuf/internal/detrand
