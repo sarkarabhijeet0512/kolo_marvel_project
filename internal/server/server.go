@@ -45,10 +45,7 @@ type Options struct {
 }
 
 func inLambda(IsinLambda string) bool {
-	if IsinLambda == "LAMBDA_TASK_ROOT" {
-		return true
-	}
-	return false
+	return IsinLambda == "LAMBDA_TASK_ROOT"
 }
 
 // Run starts the mainserver REST API server
