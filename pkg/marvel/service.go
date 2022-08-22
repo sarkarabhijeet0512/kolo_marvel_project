@@ -16,8 +16,8 @@ import (
 )
 
 type Service struct {
-	conf *viper.Viper
-	log  *logrus.Logger
+	Conf *viper.Viper
+	Log  *logrus.Logger
 	// Repo         Repository
 	CacheService *cache.Service
 }
@@ -25,8 +25,8 @@ type Service struct {
 // NewService returns a user service object.
 func NewService(conf *viper.Viper, log *logrus.Logger, CacheService *cache.Service) *Service {
 	return &Service{
-		conf: conf,
-		log:  log,
+		Conf: conf,
+		Log:  log,
 		// Repo:         dbRepo,
 		CacheService: CacheService,
 	}
@@ -40,8 +40,8 @@ const (
 func (s *Service) FetchCharacterDetails(payload *Payload) (mcd *MarvelCharacterDetails, err error) {
 
 	payload.Ts = 1
-	payload.Apikey = s.conf.GetString("MARVEL_PUBLIC_KEY")
-	payload.Hash = utils.GetMD5Hash(fmt.Sprint(payload.Ts) + s.conf.GetString("MARVEL_PRIVATE_KEY") + s.conf.GetString("MARVEL_PUBLIC_KEY"))
+	payload.Apikey = s.Conf.GetString("MARVEL_PUBLIC_KEY")
+	payload.Hash = utils.GetMD5Hash(fmt.Sprint(payload.Ts) + s.Conf.GetString("MARVEL_PRIVATE_KEY") + s.Conf.GetString("MARVEL_PUBLIC_KEY"))
 
 	err = s.CacheService.Repo.Get(payload.NameStartsWith+fmt.Sprint(payload.Page), &mcd)
 	paginate := GetDataPage(payload.Page)
@@ -51,7 +51,7 @@ func (s *Service) FetchCharacterDetails(payload *Payload) (mcd *MarvelCharacterD
 	if err != nil && err.Error() == "cache: key not found." {
 		mcd, err = s.MarvelCharacterList(payload)
 		if err != nil {
-			s.log.Info("err :", err, " ,obj :", mcd, " ,payload :", payload)
+			s.Log.Info("err :", err, " ,obj :", mcd, " ,payload :", payload)
 			err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 			return
 		}
@@ -77,7 +77,7 @@ func (s *Service) MarvelCharacterList(payload *Payload) (mcd *MarvelCharacterDet
 		params = url.Values{}
 	)
 
-	base, _ := url.Parse(s.conf.GetString("MARVEL_BASE_SVC") + "/v1/public/characters")
+	base, _ := url.Parse(s.Conf.GetString("MARVEL_BASE_SVC") + "/v1/public/characters")
 
 	params.Add("apikey", payload.Apikey)
 	params.Add("hash", payload.Hash)
@@ -102,7 +102,8 @@ func (s *Service) MarvelCharacterList(payload *Payload) (mcd *MarvelCharacterDet
 		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 		return
 	}
-
+	fmt.Println(res.StatusCode)
+	status := res.StatusCode
 	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
@@ -111,8 +112,9 @@ func (s *Service) MarvelCharacterList(payload *Payload) (mcd *MarvelCharacterDet
 		return
 	}
 	err = json.Unmarshal(body, &mcd)
-	if err != nil {
-		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
+	mcd.Code = status
+	if status != http.StatusOK || err != nil {
+		err = er.New(err, er.UncaughtException).SetStatus(http.StatusServiceUnavailable)
 		return
 	}
 	return

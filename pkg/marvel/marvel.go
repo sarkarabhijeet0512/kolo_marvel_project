@@ -4,20 +4,19 @@ import "go.uber.org/fx"
 
 var Module = fx.Options(
 	fx.Provide(
-		NewDBRepository,
 		NewService,
 	),
 )
 
 type (
 	MarvelCharacterDetails struct {
-		Code            int    `json:"code"`
-		Status          string `json:"status"`
-		Copyright       string `json:"copyright"`
-		AttributionText string `json:"attributionText"`
-		AttributionHTML string `json:"attributionHTML"`
-		Data            Data   `json:"data"`
-		Etag            string `json:"etag"`
+		Code            interface{} `json:"code"`
+		Status          string      `json:"status"`
+		Copyright       string      `json:"copyright"`
+		AttributionText string      `json:"attributionText"`
+		AttributionHTML string      `json:"attributionHTML"`
+		Data            Data        `json:"data"`
+		Etag            string      `json:"etag"`
 	}
 	Urls struct {
 		Type string `json:"type"`

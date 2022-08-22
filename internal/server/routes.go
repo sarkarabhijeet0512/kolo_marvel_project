@@ -11,7 +11,6 @@ func rootRoutes(router *gin.RouterGroup, o *Options) {
 
 	// middlewares
 	r.Use(mw.ErrorHandler(o.Log))
-	r.GET("/test/", o.DummyHandler.Dummy)
 }
 
 func v1Routes(router *gin.RouterGroup, o *Options) {

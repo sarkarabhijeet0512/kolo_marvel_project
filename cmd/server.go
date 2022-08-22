@@ -5,7 +5,6 @@ import (
 	"kolo_marvel_project/internal/server"
 	"kolo_marvel_project/internal/server/handler"
 	"kolo_marvel_project/pkg/cache"
-	"kolo_marvel_project/pkg/dummy"
 	"kolo_marvel_project/pkg/marvel"
 	"kolo_marvel_project/utils/initialize"
 
@@ -16,14 +15,13 @@ func serverRun() {
 	app := fx.New(
 		fx.Provide(
 			// postgresql
-			initialize.NewKoloMarvelprojecteDB,
+			// initialize.NewKoloMarvelprojecteDB,
 			initialize.NewRedisWorker,
 		),
 		config.Module,
 		initialize.Module,
 		server.Module,
 		handler.Module,
-		dummy.Module,
 		marvel.Module,
 		cache.Module,
 	)

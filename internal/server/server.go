@@ -8,6 +8,7 @@ import (
 
 	"kolo_marvel_project/internal/server/handler"
 	"kolo_marvel_project/pkg/cache"
+	"kolo_marvel_project/pkg/marvel"
 
 	"github.com/apex/gateway"
 	"github.com/gin-gonic/gin"
@@ -39,12 +40,12 @@ type Options struct {
 
 	Redis         *redis.Pool `name:"redisWorker"`
 	CacheService  *cache.Service
-	DummyHandler  *handler.DummyHandler
+	MarvelService *marvel.Service
 	MarvelHandler *handler.MarvelHandler
 }
 
-func inLambda() bool {
-	if lambdaTaskRoot := os.Getenv("LAMBDA_TASK_ROOT"); lambdaTaskRoot != "" {
+func inLambda(IsinLambda string) bool {
+	if IsinLambda == "LAMBDA_TASK_ROOT" {
 		return true
 	}
 	return false
@@ -53,7 +54,8 @@ func inLambda() bool {
 // Run starts the mainserver REST API server
 func Run(o Options) {
 	router := SetupRouter(&o)
-	if inLambda() {
+	IsinLambda := os.Getenv("LAMBDA_TASK_ROOT")
+	if inLambda(IsinLambda) {
 		fmt.Println("running aws lambda in aws")
 		log.Fatal(gateway.ListenAndServe(addr, SetupRouter(&o)))
 	} else {

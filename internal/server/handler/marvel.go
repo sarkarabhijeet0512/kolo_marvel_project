@@ -10,8 +10,8 @@ import (
 )
 
 type MarvelHandler struct {
-	log           *logrus.Logger
-	marvelservice *marvel.Service
+	Log           *logrus.Logger
+	Marvelservice *marvel.Service
 }
 
 func newMarvelHandler(
@@ -20,8 +20,8 @@ func newMarvelHandler(
 
 ) *MarvelHandler {
 	return &MarvelHandler{
-		log:           log,
-		marvelservice: marvelservice,
+		Log:           log,
+		Marvelservice: marvelservice,
 	}
 }
 
@@ -41,17 +41,17 @@ func (h *MarvelHandler) SearchMarvelCharacters(c *gin.Context) {
 	defer func() {
 		if err != nil {
 			c.Error(err)
-			h.log.WithField("span", err).Warn(err.Error())
+			h.Log.WithField("span", err).Warn(err.Error())
 			return
 		}
 	}()
 	if err = c.ShouldBind(&req); err != nil {
-		h.log.WithField("span", err).Warn(err.Error())
+		h.Log.WithField("span", err).Warn(err.Error())
 		err = er.New(err, er.UncaughtException).SetStatus(http.StatusBadRequest)
 		return
 	}
 
-	charcaterObj, err := h.marvelservice.FetchCharacterDetails(&req)
+	charcaterObj, err := h.Marvelservice.FetchCharacterDetails(&req)
 	if err != nil {
 		err = er.New(err, er.UncaughtException).SetStatus(http.StatusInternalServerError)
 		return
